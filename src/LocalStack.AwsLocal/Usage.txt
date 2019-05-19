@@ -1,0 +1,13 @@
+﻿Thin wrapper around the "aws" command line interface (CLI) for use with LocalStack.
+
+The "awslocal" CLI allows you to easily interact with your local services without
+having to specify "--endpoint-url=http://..." for every single command.
+
+Example:
+Instead of the following command ...
+aws --endpoint-url=https://localhost:4568 --no-verify-ssl kinesis list-streams
+... you can simply use this:
+awslocal kinesis list-streams
+
+Options:
+  Run "aws help" for more details on the aws CLI subcommands.

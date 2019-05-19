@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>netcoreapp2.2</TargetFrameworks>
+
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>awslocal</ToolCommandName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="usage.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Usage.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LocalStack.Client" Version="0.0.1" />
+  </ItemGroup>
+
+</Project>
