@@ -1,8 +1,8 @@
-﻿using System;
+﻿using LocalStack.AwsLocal.Contracts;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using LocalStack.AwsLocal.Contracts;
 
 namespace LocalStack.AwsLocal
 {
@@ -21,7 +21,6 @@ namespace LocalStack.AwsLocal
                 cmd.StartInfo.CreateNoWindow = true;
                 cmd.StartInfo.UseShellExecute = false;
                 cmd.StartInfo.Arguments = isWindows ? $"/c {command}" : "-c \"" + command + "\"";
-
 
                 if (workingDirectoryPath != null)
                 {

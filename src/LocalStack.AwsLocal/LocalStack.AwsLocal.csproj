@@ -3,21 +3,25 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFrameworks>netcoreapp2.2</TargetFrameworks>
-
-    <PackAsTool>true</PackAsTool>
     <ToolCommandName>awslocal</ToolCommandName>
+    <PackAsTool>true</PackAsTool>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="usage.txt" />
+    <Folder Include="Depedencies\Contracts\" />
+    <Folder Include="Depedencies\Models\" />
+    <Folder Include="Depedencies\Enums\" />
+
+    <Compile Include="..\..\depedencies\localstack-dotnet-client\src\LocalStack.Client\Config.cs" Link="Depedencies\Config.cs" />
+    <Compile Include="..\..\depedencies\localstack-dotnet-client\src\LocalStack.Client\Contracts\IConfig.cs" Link="Depedencies\Contracts\IConfig.cs" />
+    <Compile Include="..\..\depedencies\localstack-dotnet-client\src\LocalStack.Client\Enums\AwsServiceEndpointMetadata.cs" Link="Depedencies\Enums\AwsServiceEndpointMetadata.cs" />
+    <Compile Include="..\..\depedencies\localstack-dotnet-client\src\LocalStack.Client\Enums\AwsServiceEnum.cs" Link="Depedencies\Enums\AwsServiceEnum.cs" />
+    <Compile Include="..\..\depedencies\localstack-dotnet-client\src\LocalStack.Client\Models\AwsServiceEndpoint.cs" Link="Depedencies\Models\AwsServiceEndpoint.cs" />
+
+    <None Include="..\..\depedencies\README.md" Link="Depedencies\README.md" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Usage.txt" />
   </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="LocalStack.Client" Version="0.0.1" />
-  </ItemGroup>
-
 </Project>

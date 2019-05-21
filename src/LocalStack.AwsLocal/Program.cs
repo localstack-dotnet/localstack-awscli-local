@@ -1,34 +1,35 @@
-﻿using System;
+﻿using LocalStack.AwsLocal.Contracts;
+using LocalStack.Client;
+using LocalStack.Client.Contracts;
+using LocalStack.Client.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using LocalStack.AwsLocal.Contracts;
-using LocalStack.Client;
-using LocalStack.Client.Models;
 
 namespace LocalStack.AwsLocal
 {
-    public class Program
+    internal static class Program
     {
         private const string UsageResource = "LocalStack.AwsLocal.Usage.txt";
-        private static  readonly IProcessHelper ProcessHelper = new ProcessHelper();
 
-        private static string[] _args;
-        private static IEnumerable<string> Args => _args;
+        private static readonly IProcessHelper ProcessHelper = new ProcessHelper();
+        private static readonly string LocalStackHost = Environment.GetEnvironmentVariable("LOCALSTACK_HOST");
+        private static readonly IConfig Config = new Config(LocalStackHost);
 
-        static void Main(string[] args)
+        private static IEnumerable<string> Args { get; set; }
+
+        private static void Main(string[] args)
         {
-            _args = args;
+            Args = args;
 
             if (args.Length == 0 || (args[0] == "-h"))
             {
                 Usage();
             }
 
-            string localStackHost = Environment.GetEnvironmentVariable("LOCALSTACK_HOST");
-
-            var awsServiceEndpoint = GetServiceEndpoint(localStackHost);
+            AwsServiceEndpoint awsServiceEndpoint = GetServiceEndpoint();
             string service = GetService();
 
             if (awsServiceEndpoint == null || service == null)
@@ -53,7 +54,7 @@ namespace LocalStack.AwsLocal
             ProcessHelper.CmdExecute(string.Join(' ', arguments), null, true, true, new Dictionary<string, string>
             {
                 {"AWS_DEFAULT_REGION", awsDefaultRegion},
-                { "AWS_ACCESS_KEY_ID", awsAccessKeyId},
+                {"AWS_ACCESS_KEY_ID", awsAccessKeyId},
                 {"AWS_SECRET_ACCESS_KEY", awsSecretAccessKey}
             });
         }
@@ -71,7 +72,7 @@ namespace LocalStack.AwsLocal
             return string.Empty;
         }
 
-        private static AwsServiceEndpoint GetServiceEndpoint(string localStackHost = null)
+        private static AwsServiceEndpoint GetServiceEndpoint()
         {
             string service = GetService();
             if (service == "s3api")
@@ -79,16 +80,15 @@ namespace LocalStack.AwsLocal
                 service = "s3";
             }
 
-            var awsServiceEndpoints = Config.GetAwsServiceEndpoints(localStackHost).ToList();
+            var awsServiceEndpoints = Config.GetAwsServiceEndpoints();
             return awsServiceEndpoints.SingleOrDefault(endpoint => endpoint.CliName == service);
         }
-
 
         private static void Usage()
         {
             using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(UsageResource))
             {
-                using (StreamReader reader = new StreamReader(stream))
+                using (var reader = new StreamReader(stream))
                 {
                     string result = reader.ReadToEnd();
                     Console.WriteLine(result);
