@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Docs\Usage.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Depedencies\Contracts\" />
     <Folder Include="Depedencies\Models\" />
     <Folder Include="Depedencies\Enums\" />
@@ -17,11 +21,8 @@
     <Compile Include="..\..\depedencies\localstack-dotnet-client\src\LocalStack.Client\Enums\AwsServiceEndpointMetadata.cs" Link="Depedencies\Enums\AwsServiceEndpointMetadata.cs" />
     <Compile Include="..\..\depedencies\localstack-dotnet-client\src\LocalStack.Client\Enums\AwsServiceEnum.cs" Link="Depedencies\Enums\AwsServiceEnum.cs" />
     <Compile Include="..\..\depedencies\localstack-dotnet-client\src\LocalStack.Client\Models\AwsServiceEndpoint.cs" Link="Depedencies\Models\AwsServiceEndpoint.cs" />
+    <EmbeddedResource Include="Docs\Usage.txt" />
 
     <None Include="..\..\depedencies\README.md" Link="Depedencies\README.md" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="Usage.txt" />
   </ItemGroup>
 </Project>

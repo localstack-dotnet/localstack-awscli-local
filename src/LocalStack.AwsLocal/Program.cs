@@ -12,7 +12,7 @@ namespace LocalStack.AwsLocal
 {
     internal static class Program
     {
-        private const string UsageResource = "LocalStack.AwsLocal.Usage.txt";
+        private const string UsageResource = "LocalStack.AwsLocal.Docs.Usage.txt";
 
         private static readonly IProcessHelper ProcessHelper = new ProcessHelper();
         private static readonly string LocalStackHost = Environment.GetEnvironmentVariable("LOCALSTACK_HOST");
@@ -29,10 +29,9 @@ namespace LocalStack.AwsLocal
                 Usage();
             }
 
-            AwsServiceEndpoint awsServiceEndpoint = GetServiceEndpoint();
-            string service = GetService();
+            (string service, AwsServiceEndpoint awsServiceEndpoint) = GetServiceEndpoint();
 
-            if (awsServiceEndpoint == null || service == null)
+            if (awsServiceEndpoint == null)
             {
                 Console.WriteLine($"ERROR: Unable to find LocalStack endpoint for service {service}");
                 Environment.Exit(1);
@@ -72,7 +71,7 @@ namespace LocalStack.AwsLocal
             return string.Empty;
         }
 
-        private static AwsServiceEndpoint GetServiceEndpoint()
+        private static (string service, AwsServiceEndpoint awsServiceEndpoint) GetServiceEndpoint()
         {
             string service = GetService();
             if (service == "s3api")
@@ -81,7 +80,7 @@ namespace LocalStack.AwsLocal
             }
 
             var awsServiceEndpoints = Config.GetAwsServiceEndpoints();
-            return awsServiceEndpoints.SingleOrDefault(endpoint => endpoint.CliName == service);
+            return (service, awsServiceEndpoints.SingleOrDefault(endpoint => endpoint.CliName == service));
         }
 
         private static void Usage()
