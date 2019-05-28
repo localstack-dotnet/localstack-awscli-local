@@ -1,100 +1,21 @@
-﻿using LocalStack.AwsLocal.Contracts;
-using LocalStack.Client;
-using LocalStack.Client.Contracts;
-using LocalStack.Client.Models;
+﻿using LocalStack.Client;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
 
 namespace LocalStack.AwsLocal
 {
     internal static class Program
     {
-        private const string UsageResource = "LocalStack.AwsLocal.Docs.Usage.txt";
-
-        private static readonly IProcessHelper ProcessHelper = new ProcessHelper();
         private static readonly string LocalStackHost = Environment.GetEnvironmentVariable("LOCALSTACK_HOST");
-        private static readonly IConfig Config = new Config(LocalStackHost);
-
-        private static IEnumerable<string> Args { get; set; }
 
         private static void Main(string[] args)
         {
-            Args = args;
+            var processHelper = new ProcessHelper();
+            var config = new Config(LocalStackHost);
+            var textWriter = Console.Out;
 
-            if (args.Length == 0 || (args[0] == "-h"))
-            {
-                Usage();
-            }
+            var commandDispatcher = new CommandDispatcher(processHelper, config, textWriter, args);
 
-            (string service, AwsServiceEndpoint awsServiceEndpoint) = GetServiceEndpoint();
-
-            if (awsServiceEndpoint == null)
-            {
-                Console.WriteLine($"ERROR: Unable to find LocalStack endpoint for service {service}");
-                Environment.Exit(1);
-            }
-
-            var arguments = args.ToList();
-            arguments.Insert(0, "aws");
-            arguments.Insert(1, $"--endpoint-url={awsServiceEndpoint.ServiceUrl}");
-
-            if (awsServiceEndpoint.Host.Contains("https"))
-            {
-                arguments.Insert(2, "--no-verify-ssl");
-            }
-
-            string awsDefaultRegion = Environment.GetEnvironmentVariable("AWS_DEFAULT_REGION") ?? "us-east-1";
-            string awsAccessKeyId = Environment.GetEnvironmentVariable("AWS_ACCESS_KEY_ID") ?? "_not_needed_locally_";
-            string awsSecretAccessKey = Environment.GetEnvironmentVariable("AWS_SECRET_ACCESS_KEY") ?? "_not_needed_locally_";
-
-            ProcessHelper.CmdExecute(string.Join(' ', arguments), null, true, true, new Dictionary<string, string>
-            {
-                {"AWS_DEFAULT_REGION", awsDefaultRegion},
-                {"AWS_ACCESS_KEY_ID", awsAccessKeyId},
-                {"AWS_SECRET_ACCESS_KEY", awsSecretAccessKey}
-            });
-        }
-
-        private static string GetService()
-        {
-            foreach (string arg in Args)
-            {
-                if (!arg.StartsWith('-'))
-                {
-                    return arg;
-                }
-            }
-
-            return string.Empty;
-        }
-
-        private static (string service, AwsServiceEndpoint awsServiceEndpoint) GetServiceEndpoint()
-        {
-            string service = GetService();
-            if (service == "s3api")
-            {
-                service = "s3";
-            }
-
-            var awsServiceEndpoints = Config.GetAwsServiceEndpoints();
-            return (service, awsServiceEndpoints.SingleOrDefault(endpoint => endpoint.CliName == service));
-        }
-
-        private static void Usage()
-        {
-            using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(UsageResource))
-            {
-                using (var reader = new StreamReader(stream))
-                {
-                    string result = reader.ReadToEnd();
-                    Console.WriteLine(result);
-                }
-            }
-
-            Environment.Exit(0);
+            commandDispatcher.Run();
         }
     }
 }
