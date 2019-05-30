@@ -28,7 +28,7 @@ steps:
       BUILD_ID: $(Build.BuildId)
 
   - task: PublishBuildArtifacts@1
-    displayName: "Publish Artifact: LocalStack.Client"
+    displayName: "Publish Artifact: LocalStack.AwsLocal"
     inputs:
       PathtoPublish: artifacts/
-      ArtifactName: LocalStack.Client
+      ArtifactName: LocalStack.AwsLocal
