@@ -12,10 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Depedencies\Contracts\" />
-    <Folder Include="Depedencies\Models\" />
-    <Folder Include="Depedencies\Enums\" />
-
     <Compile Include="..\..\depedencies\localstack-dotnet-client\src\LocalStack.Client\Config.cs" Link="Depedencies\Config.cs" />
     <Compile Include="..\..\depedencies\localstack-dotnet-client\src\LocalStack.Client\Contracts\IConfig.cs" Link="Depedencies\Contracts\IConfig.cs" />
     <Compile Include="..\..\depedencies\localstack-dotnet-client\src\LocalStack.Client\Enums\AwsServiceEndpointMetadata.cs" Link="Depedencies\Enums\AwsServiceEndpointMetadata.cs" />

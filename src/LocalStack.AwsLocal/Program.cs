@@ -11,9 +11,8 @@ namespace LocalStack.AwsLocal
         {
             var processHelper = new ProcessHelper();
             var config = new Config(LocalStackHost);
-            var textWriter = Console.Out;
 
-            var commandDispatcher = new CommandDispatcher(processHelper, config, textWriter, args);
+            var commandDispatcher = new CommandDispatcher(processHelper, config, args);
 
             commandDispatcher.Run();
         }

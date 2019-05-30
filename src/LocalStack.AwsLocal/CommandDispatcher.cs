@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using LocalStack.AwsLocal.AmbientContexts;
 using LocalStack.AwsLocal.Contracts;
-using LocalStack.AwsLocal.EnvironmentContext;
 using LocalStack.AwsLocal.Extensions;
 using LocalStack.Client.Contracts;
 using LocalStack.Client.Models;
@@ -16,18 +16,16 @@ namespace LocalStack.AwsLocal
 
         private readonly IProcessHelper _processHelper;
         private readonly IConfig _config;
-        private readonly TextWriter _textWriter;
         private readonly string[] _args;
 
         private CommandDispatcher()
         {
         }
 
-        public CommandDispatcher(IProcessHelper processHelper, IConfig config, TextWriter textWriter, string[] args)
+        public CommandDispatcher(IProcessHelper processHelper, IConfig config, string[] args)
         {
             _processHelper = processHelper;
             _config = config;
-            _textWriter = textWriter;
             _args = args;
         }
 
@@ -36,8 +34,8 @@ namespace LocalStack.AwsLocal
             if (_args.Length == 0 || (_args[0] == "-h"))
             {
                 string usageInfo = GetUsageInfo();
-                _textWriter.WriteLine(usageInfo);
-                EnvironmentControl.Current.Exit(0);
+                ConsoleContext.Current.WriteLine(usageInfo);
+                EnvironmentContext.Current.Exit(0);
                 return;
             }
 
@@ -45,8 +43,8 @@ namespace LocalStack.AwsLocal
 
             if (string.IsNullOrEmpty(serviceName))
             {
-                _textWriter.WriteLine("ERROR: Invalid argument, please enter a valid aws cli command");
-                EnvironmentControl.Current.Exit(1);
+                ConsoleContext.Current.WriteLine("ERROR: Invalid argument, please enter a valid aws cli command");
+                EnvironmentContext.Current.Exit(1);
                 return;
             }
 
@@ -54,8 +52,8 @@ namespace LocalStack.AwsLocal
 
             if (awsServiceEndpoint == null)
             {
-                _textWriter.WriteLine($"ERROR: Unable to find LocalStack endpoint for service {serviceName}");
-                EnvironmentControl.Current.Exit(1);
+                ConsoleContext.Current.WriteLine($"ERROR: Unable to find LocalStack endpoint for service {serviceName}");
+                EnvironmentContext.Current.Exit(1);
                 return;
             }
 
