@@ -14,8 +14,6 @@ pr:
 pool:
   name: Hosted macOS
 steps:
-  - checkout: self
-    submodules: true
   - task: Bash@3
     displayName: 'Compile & Tests'
     inputs:
