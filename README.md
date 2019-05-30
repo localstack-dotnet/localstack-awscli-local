@@ -4,6 +4,14 @@ This .NET Core global tool provides the `awslocal` command, which is a thin wrap
 command line interface for use with [LocalStack](https://github.com/localstack/localstack). This tool is a .NET Core port of the 
 [LocalStack AWS CLI](https://github.com/localstack/awscli-local) for the people who have experienced issues with LocalStack AWS CLI.
 
+## Continuous integration
+
+| Build server    	| Platform 	| Build status                                                                                                                                                                                                                                                                         	|
+|-----------------	|----------	|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|
+| Azure Pipelines 	| Ubuntu   	| [![Build Status](https://denizirgindev.visualstudio.com/localstack-awscli-local/_apis/build/status/Ubuntu?branchName=master)](https://denizirgindev.visualstudio.com/localstack-awscli-local/_build/latest?definitionId=13&branchName=master) 	|
+| Azure Pipelines 	| macOs   	| [![Build Status](https://denizirgindev.visualstudio.com/localstack-awscli-local/_apis/build/status/macOS?branchName=master)](https://denizirgindev.visualstudio.com/localstack-awscli-local/_build/latest?definitionId=12&branchName=master)	|
+| Azure Pipelines 	| Windows   	| [![Build Status](https://denizirgindev.visualstudio.com/localstack-awscli-local/_apis/build/status/Windows?branchName=master)](https://denizirgindev.visualstudio.com/localstack-awscli-local/_build/latest?definitionId=14&branchName=master)	|
+
 ## Installation
 
 You can install the `awslocal` command via `.NET Core CLI`:
@@ -11,6 +19,11 @@ You can install the `awslocal` command via `.NET Core CLI`:
 ```
 dotnet tool install --global LocalStack.AwsLocal
 ```
+
+| Stable                                                                                                              | Nightly                                                                                                                                                                        |
+|---------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [![NuGet](https://img.shields.io/nuget/v/LocalStack.AwsLocal.svg)](https://www.nuget.org/packages/LocalStack.AwsLocal/) | [![MyGet](https://img.shields.io/myget/localstack-dotnet-client/v/LocalStack.AwsLocal.svg?label=myget)](https://www.myget.org/feed/localstack-dotnet-client/package/nuget/LocalStack.AwsLocal) |
+
 
 ## Usage
 
