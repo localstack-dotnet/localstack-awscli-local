@@ -3,19 +3,32 @@ trigger:
     include:
       - "*"
   paths:
-    include:
-      - "*"
     exclude:
-      - "**/*.md"
+      - README.md
+      - CONTRIBUTING.md
+      - LICENSE
 pr:
   branches:
     include:
       - "*"
+schedules:
+  - cron: "0 12 * * 0"
+    displayName: Weekly Sunday build
+    branches:
+      include:
+        - master
+    always: true
 pool:
-  name: Hosted macOS
+  vmImage: macOS-10.14
 steps:
+  - task: UseDotNet@2
+    displayName: ".NET Core 3.1.x"
+    inputs:
+      version: "3.1.x"
+      packageType: sdk
+
   - task: Bash@3
-    displayName: 'Compile & Tests'
+    displayName: "Compile & Tests"
     inputs:
       targetType: filePath
       filePath: ./build.sh

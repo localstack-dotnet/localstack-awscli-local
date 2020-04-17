@@ -1,6 +1,6 @@
 using System;
-using System.Diagnostics;
 using System.Text.RegularExpressions;
+using System.Diagnostics;
 
 var target = Argument("target", "default");
 var configuration = Argument("config", "Release");
@@ -10,7 +10,8 @@ var artifactOutput = "./artifacts";
 var testResults = "results.trx";
 string projectPath = "./src/LocalStack.AwsLocal/LocalStack.AwsLocal.csproj";
 
-Task("default")
+
+Task("Default")
     .IsDependentOn("init")
     .IsDependentOn("tests");
 
@@ -22,15 +23,21 @@ Task("init")
             Arguments = "--info"
         });
 
-        StartProcess("git", new ProcessSettings {
-            Arguments = "submodule update --init --recursive"
-        });
-
         if(IsRunningOnUnix())
         {
             StartProcess("git", new ProcessSettings {
                 Arguments = "config --global core.autocrlf true"
             });
+
+            StartProcess("git", new ProcessSettings {
+                Arguments = "submodule update --init --recursive"
+            });
+
+            StartProcess("mono", new ProcessSettings {
+                Arguments = "--version"
+            });
+
+            InstallXUnitNugetPackage();
         }      
     });
 
@@ -66,13 +73,18 @@ Task("tests")
            foreach(string targetFramework in testProj.TargetFrameworks)
            {
                 Warning($"Running {targetFramework.ToUpper()} tests for {testProj.AssemblyName}");
-
-                string testFilePrefix = targetFramework.Replace(".","-");
-
                 settings.Framework = targetFramework;
-                settings.ArgumentCustomization  = args => args.Append($" --logger \"trx;LogFileName={testFilePrefix}_{testResults}\"");
 
-                DotNetCoreTest(testProjectPath, settings);               
+                if(IsRunningOnUnix() && targetFramework == "net461")
+                {
+                    RunXunitUsingMono(targetFramework, $"{testProj.DirectoryPath}/bin/{configuration}/{targetFramework}/{testProj.AssemblyName}.dll");
+                }
+                else
+                {
+                    string testFilePrefix = targetFramework.Replace(".","-");
+                    settings.ArgumentCustomization  = args => args.Append($" --logger \"trx;LogFileName={testFilePrefix}_{testResults}\"");
+                    DotNetCoreTest(testProjectPath, settings);
+                }
            }
         }
     });
@@ -109,6 +121,28 @@ RunTarget(target);
 /*
 / HELPER METHODS
 */
+private void InstallXUnitNugetPackage()
+{
+    NuGetInstallSettings nugetInstallSettings = new NuGetInstallSettings();
+    nugetInstallSettings.Version = "2.4.1";
+    nugetInstallSettings.Verbosity = NuGetVerbosity.Normal;
+    nugetInstallSettings.OutputDirectory = "testrunner";            
+    nugetInstallSettings.WorkingDirectory = ".";
+
+    NuGetInstall("xunit.runner.console", nugetInstallSettings);
+}
+
+private void RunXunitUsingMono(string targetFramework, string assemblyPath)
+{
+    int exitCode = StartProcess("mono", new ProcessSettings {
+        Arguments = $"./testrunner/xunit.runner.console.2.4.1/tools/{targetFramework}/xunit.console.exe {assemblyPath}"
+    });
+
+    if(exitCode != 0)
+    {
+        throw new InvalidOperationException($"Exit code: {exitCode}");
+    }
+}
 
 private IList<TestProjMetadata> GetProjMetadata()
 {
