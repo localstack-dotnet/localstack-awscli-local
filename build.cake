@@ -29,16 +29,16 @@ Task("init")
                 Arguments = "config --global core.autocrlf true"
             });
 
-            StartProcess("git", new ProcessSettings {
-                Arguments = "submodule update --init --recursive"
-            });
-
             StartProcess("mono", new ProcessSettings {
                 Arguments = "--version"
             });
 
             InstallXUnitNugetPackage();
-        }      
+        }
+
+        StartProcess("git", new ProcessSettings {
+            Arguments = "submodule update --init --recursive"
+        });   
     });
 
 Task("compile")
