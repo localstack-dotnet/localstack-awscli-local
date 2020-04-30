@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFrameworks>netcoreapp3.1;netcoreapp2.1</TargetFrameworks>
     <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
     <AssemblyName>LocalStack.AwsLocal</AssemblyName>
     <RootNamespace>LocalStack.AwsLocal</RootNamespace>
@@ -29,7 +29,7 @@
     <None Include="LICENSE.txt" Pack="true" PackagePath="">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="../../assets/localstack-dotnet-square.png" Pack="true" PackagePath=""/>
+    <None Include="../../assets/localstack-dotnet-square.png" Pack="true" PackagePath="" />
   </ItemGroup>
 
   <ItemGroup>
@@ -45,5 +45,13 @@
     <EmbeddedResource Include="Docs\Usage.txt" />
 
     <None Include="..\..\depedencies\README.md" Link="Depedencies\README.md" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Depedencies\CommandLineApi\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.CommandLine" Version="2.0.0-beta1.20214.1" />
   </ItemGroup>
 </Project>
