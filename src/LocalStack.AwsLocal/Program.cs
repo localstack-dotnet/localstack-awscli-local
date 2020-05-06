@@ -1,5 +1,7 @@
 ﻿using LocalStack.Client;
 using System;
+using System.Diagnostics;
+using System.Threading;
 using LocalStack.AwsLocal.ProcessCore;
 using LocalStack.AwsLocal.ProcessCore.IO;
 
@@ -11,6 +13,13 @@ namespace LocalStack.AwsLocal
 
         private static void Main(string[] args)
         {
+            //Console.WriteLine("Waiting for debugger to attach");
+            //while (!Debugger.IsAttached)
+            //{
+            //    Thread.Sleep(100);
+            //}
+            //Console.WriteLine("Debugger attached");
+
             var processRunner = new ProcessRunner();
             var config = new Config(LocalStackHost);
             var fileSystem = new FileSystem();
