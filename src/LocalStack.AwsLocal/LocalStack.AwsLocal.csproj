@@ -16,6 +16,7 @@
     </Description>
     <PackageTags>global-tool, wrapper, cli, aws-cli, dotnet, dotnet-core, localstack</PackageTags>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <Target Name="PreBuild" AfterTargets="PreBuildEvent">
@@ -47,11 +48,4 @@
     <None Include="..\..\depedencies\README.md" Link="Depedencies\README.md" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Depedencies\CommandLineApi\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="System.CommandLine" Version="2.0.0-beta1.20214.1" />
-  </ItemGroup>
 </Project>

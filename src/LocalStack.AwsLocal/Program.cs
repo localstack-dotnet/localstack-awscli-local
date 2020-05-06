@@ -1,9 +1,7 @@
 ﻿using LocalStack.Client;
 using System;
-using System.CommandLine;
-using System.CommandLine.Parsing;
-using System.Diagnostics;
-using System.Linq;
+using LocalStack.AwsLocal.ProcessCore;
+using LocalStack.AwsLocal.ProcessCore.IO;
 
 namespace LocalStack.AwsLocal
 {
@@ -13,14 +11,11 @@ namespace LocalStack.AwsLocal
 
         private static void Main(string[] args)
         {
-            var rootCommand = new RootCommand();
-            ParseResult parseResult = rootCommand.Parse(args);
-            var parsedArgs = parseResult.Tokens.Select(token => token.Value).ToArray();
-
-            var processHelper = new ProcessHelper();
+            var processRunner = new ProcessRunner();
             var config = new Config(LocalStackHost);
+            var fileSystem = new FileSystem();
 
-            var commandDispatcher = new CommandDispatcher(processHelper, config, parsedArgs);
+            var commandDispatcher = new CommandDispatcher(processRunner, config, fileSystem, args);
 
             commandDispatcher.Run();
         }

@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using LocalStack.AwsLocal.AmbientContexts;
 using LocalStack.AwsLocal.Contracts;
 using LocalStack.AwsLocal.Extensions;
+using LocalStack.AwsLocal.ProcessCore;
+using LocalStack.AwsLocal.ProcessCore.IO;
 using LocalStack.Client.Contracts;
 using LocalStack.Client.Models;
 
@@ -14,18 +18,16 @@ namespace LocalStack.AwsLocal
     {
         private const string UsageResource = "LocalStack.AwsLocal.Docs.Usage.txt";
 
-        private readonly IProcessHelper _processHelper;
+        private readonly IProcessRunner _processRunner;
         private readonly IConfig _config;
+        private readonly IFileSystem _fileSystem;
         private readonly string[] _args;
 
-        private CommandDispatcher()
+        public CommandDispatcher(IProcessRunner processRunner, IConfig config, IFileSystem fileSystem, string[] args)
         {
-        }
-
-        public CommandDispatcher(IProcessHelper processHelper, IConfig config, string[] args)
-        {
-            _processHelper = processHelper;
+            _processRunner = processRunner;
             _config = config;
+            _fileSystem = fileSystem;
             _args = args;
         }
 
@@ -57,31 +59,113 @@ namespace LocalStack.AwsLocal
                 return;
             }
 
-            string cliCommand = _args.GetCliCommand(awsServiceEndpoint.ServiceUrl);
+            var processSettings = new ProcessSettings
+            { NoWorkingDirectory = true, Silent = true, EnvironmentVariables = new Dictionary<string, string>() };
+            processSettings.EnvironmentVariables.Add("AWS_DEFAULT_REGION", Environment.GetEnvironmentVariable("AWS_DEFAULT_REGION") ?? "us-east-1");
+            processSettings.EnvironmentVariables.Add("AWS_ACCESS_KEY_ID", Environment.GetEnvironmentVariable("AWS_ACCESS_KEY_ID") ?? "_not_needed_locally_");
+            processSettings.EnvironmentVariables.Add("AWS_SECRET_ACCESS_KEY", Environment.GetEnvironmentVariable("AWS_SECRET_ACCESS_KEY") ?? "_not_needed_locally_");
 
-            string awsDefaultRegion = Environment.GetEnvironmentVariable("AWS_DEFAULT_REGION") ?? "us-east-1";
-            string awsAccessKeyId = Environment.GetEnvironmentVariable("AWS_ACCESS_KEY_ID") ?? "_not_needed_locally_";
-            string awsSecretAccessKey = Environment.GetEnvironmentVariable("AWS_SECRET_ACCESS_KEY") ?? "_not_needed_locally_";
 
-            _processHelper.CmdExecute(cliCommand, null, true, true, new Dictionary<string, string>
+            var builder = new ProcessArgumentBuilder();
+            builder.Append(_args[0]);
+            builder.AppendSwitch("--endpoint-url", "=", awsServiceEndpoint.ServiceUrl);
+
+            if (awsServiceEndpoint.ServiceUrl.StartsWith("https"))
             {
-                {"AWS_DEFAULT_REGION", awsDefaultRegion},
-                {"AWS_ACCESS_KEY_ID", awsAccessKeyId},
-                {"AWS_SECRET_ACCESS_KEY", awsSecretAccessKey}
-            });
+                builder.Append("--no-verify-ssl");
+            }
+
+            var passToNextArgument = false;
+            for (var i = 0; i < _args.Length; i++)
+            {
+                string argument = _args[i];
+                
+                if (argument == _args[0])
+                {
+                    continue;
+                }
+
+                if (passToNextArgument)
+                {
+                    passToNextArgument = false;
+                    continue;
+                }
+
+
+                if (argument.StartsWith("--") && !argument.Contains("=") && i + 1 < _args.Length) // switch argument
+                {
+                    string nextArgument = _args[i + 1];
+                    builder.AppendSwitchQuoted(argument, " ", nextArgument);
+
+                    passToNextArgument = true;
+                    continue;
+                }
+
+                builder.Append(argument);
+            }
+
+
+            processSettings.Arguments = builder;
+
+            string awsExec = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "aws.cmd" : "aws";
+            FilePath? awsPath = GetAwsPath(awsExec);
+
+            if (awsPath == null)
+            {
+                ConsoleContext.Current.WriteLine($"ERROR: Unable to find aws cli");
+                EnvironmentContext.Current.Exit(1);
+                return;
+            }
+
+            IProcess? process = _processRunner.Start(awsPath, processSettings);
+
+            process?.WaitForExit();
         }
 
         private static string GetUsageInfo()
         {
-            using (Stream stream = Assembly.GetCallingAssembly().GetManifestResourceStream(UsageResource))
-            {
-                using (var reader = new StreamReader(stream))
-                {
+            using Stream? stream = Assembly.GetCallingAssembly().GetManifestResourceStream(UsageResource);
+                using var reader = new StreamReader(stream ?? throw new NullReferenceException(nameof(stream)));
                     string result = reader.ReadToEnd();
 
-                    return result;
+            return result;
+        }
+
+        private FilePath? GetAwsPath(params string[] awsPaths)
+        {
+            string[]? pathDirs = null;
+
+            // Look for each possible executable name in various places.
+            foreach (string toolExeName in awsPaths)
+            {
+
+                // Cache the PATH directory list if we didn't already.
+                if (pathDirs == null)
+                {
+                    string? pathEnv = Environment.GetEnvironmentVariable("PATH");
+                    if (!string.IsNullOrEmpty(pathEnv))
+                    {
+                        pathDirs = pathEnv.Split(new[] { !RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? ':' : ';' },
+                            StringSplitOptions.RemoveEmptyEntries);
+                    }
+                    else
+                    {
+                        pathDirs = new string[] { };
+                    }
+                }
+
+                // Look in every PATH directory for the file.
+                foreach (var pathDir in pathDirs)
+                {
+                    FilePath file = new DirectoryPath(pathDir).CombineWithFilePath(toolExeName);
+                    if (_fileSystem.Exist(file))
+                    {
+                        return file.FullPath;
+                    }
                 }
             }
+
+            return null;
         }
     }
 }
