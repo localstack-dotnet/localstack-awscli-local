@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using LocalStack.AwsLocal.AmbientContexts;
@@ -50,7 +49,7 @@ namespace LocalStack.AwsLocal
                 return;
             }
 
-            AwsServiceEndpoint awsServiceEndpoint = _config.GetServiceEndpoint(serviceName);
+            AwsServiceEndpoint? awsServiceEndpoint = _config.GetServiceEndpoint(serviceName);
 
             if (awsServiceEndpoint == null)
             {
@@ -61,6 +60,16 @@ namespace LocalStack.AwsLocal
 
             var processSettings = new ProcessSettings
             { NoWorkingDirectory = true, Silent = true, EnvironmentVariables = new Dictionary<string, string>() };
+
+            string? defaultRegion = Environment.GetEnvironmentVariable("DEFAULT_REGION");
+
+            if (!string.IsNullOrEmpty(defaultRegion))
+            {
+                ConsoleContext.Current.WriteLine("Environment variable \"AWS_DEFAULT_REGION\" will be overwritten by \"DEFAULT_REGION\"");
+
+                Environment.SetEnvironmentVariable("AWS_DEFAULT_REGION", defaultRegion);
+            }
+
             processSettings.EnvironmentVariables.Add("AWS_DEFAULT_REGION", Environment.GetEnvironmentVariable("AWS_DEFAULT_REGION") ?? "us-east-1");
             processSettings.EnvironmentVariables.Add("AWS_ACCESS_KEY_ID", Environment.GetEnvironmentVariable("AWS_ACCESS_KEY_ID") ?? "_not_needed_locally_");
             processSettings.EnvironmentVariables.Add("AWS_SECRET_ACCESS_KEY", Environment.GetEnvironmentVariable("AWS_SECRET_ACCESS_KEY") ?? "_not_needed_locally_");
