@@ -35,7 +35,7 @@ please refer to the man pages of `aws help`.
 Instead of the following command ...
 
 ```
-aws --endpoint-url=http://localhost:4568 kinesis list-streams
+aws --endpoint-url=http://localhost:4566 kinesis list-streams
 ```
 
 ... you can simply use this:
@@ -49,13 +49,24 @@ awslocal kinesis list-streams
 You can use the following environment variables for configuration:
 
 * `LOCALSTACK_HOST`: Set the hostname for the localstack instance. Useful when you have
-localstack is bound to another interface (i.e. docker-machine).
+localstack is bound to another interface (i.e. docker-machine). Defaults to `localhost`.
 * `USE_SSL`: Whether to use `https` endpoint URLs (required if LocalStack has been started
 with `USE_SSL=true` enabled). Defaults to `false`.
+* `USE_LEGACY_PORTS`: Whether to use old endpoint ports. Starting with LocalStack releases after `v0.11.5`, all services are now exposed via the edge service (port 4566) only! If you are using a version of LocalStack lower than v0.11.5, you should set `USE_LEGACY_PORTS` to `true`. Defaults to `false`.
+* `EDGE_PORT`: Set the edge port. Edge port can be set to any available port ([see LocalStack configuration section](https://github.com/localstack/localstack#configurations)). If you have made such a change in LocalStack's configuration, be sure to set the same port value to `EDGE_PORT`. Defaults to `4566`.
+* `DEFAULT_REGION`: Set the default region. Overrides `AWS_DEFAULT_REGION` environment variable.
 
-<!-- ## Change Log
+## Changelog
 
-* v0.4: Minor fix for Python 3 compatibility -->
+### [v1.3.0](https://github.com/localstack-dotnet/localstack-awscli-local/releases/tag/v1.3.0) 
+- Add .NET 5.0 support
+- Default port set to 4566
+- DEFAULT_REGION support
+
+### [v1.2.0](https://github.com/localstack-dotnet/localstack-awscli-local/releases/tag/v1.2.0) 
+- Add .NET Core 2.1 support
+- Fix "Quotation Marks with Strings" issues when passing JSON as argument
+See details : https://docs.aws.amazon.com/cli/latest/userguide/cli-usage-parameters-quoting-strings.html
 
 ## <a name="license"></a> License
 
