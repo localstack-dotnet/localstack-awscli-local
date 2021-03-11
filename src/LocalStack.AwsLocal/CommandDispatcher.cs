@@ -116,12 +116,16 @@ namespace LocalStack.AwsLocal
 
             processSettings.Arguments = builder;
 
-            string awsExec = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "aws.cmd" : "aws";
+            string[] awsExec = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
+                ? new[] {"aws.exe", "aws.cmd"}
+                : new[] {"aws"};
+
             FilePath? awsPath = GetAwsPath(awsExec);
 
             if (awsPath == null)
             {
-                ConsoleContext.Current.WriteLine($"ERROR: Unable to find aws cli");
+                ConsoleContext.Current.WriteLine(
+                    $"ERROR: Unable to find aws cli. Executable name: {string.Join(',', awsExec)}");
                 EnvironmentContext.Current.Exit(1);
                 return;
             }
