@@ -17,7 +17,15 @@
     <PackageTags>global-tool, wrapper, cli, aws-cli, dotnet, dotnet-core, localstack</PackageTags>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <Nullable>enable</Nullable>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+  </ItemGroup>
+
 
   <Target Name="PreBuild" AfterTargets="PreBuildEvent">
     <ItemGroup>
