@@ -58,6 +58,10 @@ with `USE_SSL=true` enabled). Defaults to `false`.
 
 ## Changelog
 
+### [v1.3.3](https://github.com/localstack-dotnet/localstack-awscli-local/releases/tag/v1.3.3) 
+- Support for new endpoints in the official [Localstack Python Client](https://github.com/localstack/localstack-python-client) v1.2.2 have been added.
+   - EFS, Backup, LakeFormation, WAF, WAF V2 and QLDB Session
+
 ### [v1.3.0](https://github.com/localstack-dotnet/localstack-awscli-local/releases/tag/v1.3.0) 
 - Add .NET 5.0 support
 - Default port set to 4566
