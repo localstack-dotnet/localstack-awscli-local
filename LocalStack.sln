@@ -9,6 +9,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LocalStack.AwsLocal.Tests",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{924DBE7D-09A6-4948-B616-3FA2025D5F94}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{E9C25D4B-E4C5-47EE-971C-C2A2BC9CA901}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LocalStack.Build", "build\LocalStack.Build\LocalStack.Build.csproj", "{D5A508CD-0098-4138-AD7D-49B98AE42503}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,12 +27,17 @@ Global
 		{1109B4DD-BD82-4759-981B-6EB1D474A200}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1109B4DD-BD82-4759-981B-6EB1D474A200}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1109B4DD-BD82-4759-981B-6EB1D474A200}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5A508CD-0098-4138-AD7D-49B98AE42503}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5A508CD-0098-4138-AD7D-49B98AE42503}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5A508CD-0098-4138-AD7D-49B98AE42503}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5A508CD-0098-4138-AD7D-49B98AE42503}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{1109B4DD-BD82-4759-981B-6EB1D474A200} = {924DBE7D-09A6-4948-B616-3FA2025D5F94}
+		{D5A508CD-0098-4138-AD7D-49B98AE42503} = {E9C25D4B-E4C5-47EE-971C-C2A2BC9CA901}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {479893D2-EC31-4B10-8F7C-DDA704071C4D}
