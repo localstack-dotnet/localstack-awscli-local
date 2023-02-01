@@ -1,16 +1,13 @@
-﻿using LocalStack.AwsLocal.AmbientContexts;
+﻿namespace LocalStack.AwsLocal.Tests.Mocks;
 
-namespace LocalStack.AwsLocal.Tests.Mocks
+public class EnvironmentContextMock : EnvironmentContext
 {
-    public class EnvironmentContextMock : EnvironmentContext
+    private int _exitValue;
+
+    public override void Exit(int value)
     {
-        private int _exitValue;
-
-        public override void Exit(int value)
-        {
-            _exitValue = value;
-        }
-
-        public int ExitValue => _exitValue;
+        _exitValue = value;
     }
+
+    public int ExitValue => _exitValue;
 }

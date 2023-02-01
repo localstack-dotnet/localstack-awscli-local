@@ -17,9 +17,9 @@ namespace LocalStack.AwsLocal.ProcessCore.IO
     {
         private readonly FileInfo _file;
 
-        public FilePath? Path { get; }
+        public FilePath Path { get; }
 
-        Path? IFileSystemInfo.Path => Path;
+        Path IFileSystemInfo.Path => Path;
 
         public bool Exists => _file.Exists;
 
@@ -35,7 +35,7 @@ namespace LocalStack.AwsLocal.ProcessCore.IO
             set => _file.Attributes = value;
         }
 
-        public File(FilePath? path)
+        public File(FilePath path)
         {
             Path = path;
             _file = new FileInfo(path?.FullPath);

@@ -7,18 +7,13 @@
 *
 ***************************************************************************************/
 
-using System;
-using System.Diagnostics;
-using System.Linq;
+namespace LocalStack.AwsLocal.ProcessCore;
 
-namespace LocalStack.AwsLocal.ProcessCore
+internal static class ProcessHelper
 {
-    internal static class ProcessHelper
+    public static void SetEnvironmentVariable(ProcessStartInfo info, string key, string value)
     {
-        public static void SetEnvironmentVariable(ProcessStartInfo info, string key, string value)
-        {
-            string envKey = info.Environment.Keys.FirstOrDefault(existingKey => StringComparer.OrdinalIgnoreCase.Equals(existingKey, key)) ?? key;
-            info.Environment[envKey] = value;
-        }
+        string envKey = info.Environment.Keys.FirstOrDefault(existingKey => StringComparer.OrdinalIgnoreCase.Equals(existingKey, key)) ?? key;
+        info.Environment[envKey] = value;
     }
 }

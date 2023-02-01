@@ -1,23 +1,20 @@
-﻿using System;
+﻿namespace LocalStack.AwsLocal.AmbientContexts;
 
-namespace LocalStack.AwsLocal.AmbientContexts
+public abstract class EnvironmentContext
 {
-    public abstract class EnvironmentContext
+    private static EnvironmentContext _current = DefaultEnvironmentContext.Instance;
+
+    public static EnvironmentContext Current
     {
-        private static EnvironmentContext _current = DefaultEnvironmentContext.Instance;
+        get => _current;
 
-        public static EnvironmentContext Current
-        {
-            get => _current;
+        set => _current = value ?? throw new ArgumentNullException(nameof(value));
+    }
 
-            set => _current = value ?? throw new ArgumentNullException(nameof(value));
-        }
+    public abstract void Exit(int value);
 
-        public abstract void Exit(int value);
-
-        public static void ResetToDefault()
-        {
-            _current = DefaultEnvironmentContext.Instance;
-        }
+    public static void ResetToDefault()
+    {
+        _current = DefaultEnvironmentContext.Instance;
     }
 }

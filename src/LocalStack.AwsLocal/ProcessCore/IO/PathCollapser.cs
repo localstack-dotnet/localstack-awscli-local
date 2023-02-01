@@ -7,43 +7,38 @@
 *
 ***************************************************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
+namespace LocalStack.AwsLocal.ProcessCore.IO;
 
-namespace LocalStack.AwsLocal.ProcessCore.IO
+internal static class PathCollapser
 {
-    internal static class PathCollapser
+    public static string Collapse(Path path)
     {
-        public static string Collapse(Path path)
+        if (path == null)
         {
-            if (path == null)
-            {
-                throw new ArgumentNullException(nameof(path));
-            }
-            var stack = new Stack<string>();
-            var segments = path.FullPath.Split('/', '\\');
-            foreach (string segment in segments)
-            {
-                switch (segment)
-                {
-                    case ".":
-                        continue;
-                    case "..":
-                    {
-                        if (stack.Count > 1)
-                        {
-                            stack.Pop();
-                        }
-                        continue;
-                    }
-                    default:
-                        stack.Push(segment);
-                        break;
-                }
-            }
-            string collapsed = string.Join("/", stack.Reverse());
-            return collapsed == string.Empty ? "." : collapsed;
+            throw new ArgumentNullException(nameof(path));
         }
+        var stack = new Stack<string>();
+        string[] segments = path.FullPath.Split('/', '\\');
+        foreach (string segment in segments)
+        {
+            switch (segment)
+            {
+                case ".":
+                    continue;
+                case "..":
+                {
+                    if (stack.Count > 1)
+                    {
+                        stack.Pop();
+                    }
+                    continue;
+                }
+                default:
+                    stack.Push(segment);
+                    break;
+            }
+        }
+        string collapsed = string.Join("/", stack.Reverse());
+        return collapsed == string.Empty ? "." : collapsed;
     }
 }

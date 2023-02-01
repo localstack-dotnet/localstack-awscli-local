@@ -1,16 +1,13 @@
-﻿using LocalStack.AwsLocal.AmbientContexts;
+﻿namespace LocalStack.AwsLocal.Tests.Mocks;
 
-namespace LocalStack.AwsLocal.Tests.Mocks
+public class ConsoleContextMock : ConsoleContext
 {
-    public class ConsoleContextMock : ConsoleContext
+    private string _text;
+
+    public override void WriteLine(string text)
     {
-        private string _text;
-
-        public override void WriteLine(string text)
-        {
-            _text = text;
-        }
-
-        public string Text => _text;
+        _text = text;
     }
+
+    public string Text => _text;
 }

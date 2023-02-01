@@ -7,10 +7,6 @@
 *
 ***************************************************************************************/
 
-
-using LocalStack.AwsLocal.ProcessCore;
-using LocalStack.AwsLocal.ProcessCore.IO;
-
 namespace LocalStack.AwsLocal.Contracts
 {
     /// <summary>
@@ -24,6 +20,6 @@ namespace LocalStack.AwsLocal.Contracts
         /// <param name="filePath">The file name such as an application or document with which to start the process.</param>
         /// <param name="settings">The information about the process to start.</param>
         /// <returns>A process handle.</returns>
-        IProcess? Start(FilePath filePath, ProcessSettings settings);
+        IProcess Start(FilePath filePath, ProcessSettings settings);
     }
 }

@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28803.452
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LocalStack.AwsLocal", "LocalStack.AwsLocal\LocalStack.AwsLocal.csproj", "{D5116356-24F8-4B01-AB33-64CCFC5F0713}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{D9F1CEF9-248C-49EA-BD93-5B5E6FD02967}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LocalStack.AwsLocal.Tests", "..\tests\LocalStack.AwsLocal.Tests\LocalStack.AwsLocal.Tests.csproj", "{1109B4DD-BD82-4759-981B-6EB1D474A200}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{924DBE7D-09A6-4948-B616-3FA2025D5F94}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,7 +28,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{1109B4DD-BD82-4759-981B-6EB1D474A200} = {D9F1CEF9-248C-49EA-BD93-5B5E6FD02967}
+		{1109B4DD-BD82-4759-981B-6EB1D474A200} = {924DBE7D-09A6-4948-B616-3FA2025D5F94}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {479893D2-EC31-4B10-8F7C-DDA704071C4D}
