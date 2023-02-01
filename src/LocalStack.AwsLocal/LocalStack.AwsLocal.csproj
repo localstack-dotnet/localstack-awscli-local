@@ -1,54 +1,60 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFrameworks>net5.0;netcoreapp3.1;netcoreapp2.1</TargetFrameworks>
-    <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
-    <AssemblyName>LocalStack.AwsLocal</AssemblyName>
-    <RootNamespace>LocalStack.AwsLocal</RootNamespace>
-    <LangVersion>latest</LangVersion>
-    <ToolCommandName>awslocal</ToolCommandName>
-    <PackAsTool>true</PackAsTool>
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFrameworks>net7.0;net6.0;net5.0;netcoreapp3.1</TargetFrameworks>
+		<TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
+		<AssemblyName>LocalStack.AwsLocal</AssemblyName>
+		<RootNamespace>LocalStack.AwsLocal</RootNamespace>
+		<LangVersion>latest</LangVersion>
+		<ToolCommandName>awslocal</ToolCommandName>
+		<PackAsTool>true</PackAsTool>
 
-    <Title>LocalStack.NET AWS CLI</Title>
-    <Description>
-      This .NET Core global tool provides the awslocal command, which is a thin wrapper around the aws command line interface for use with LocalStack. 
-    </Description>
-    <PackageTags>global-tool, wrapper, cli, aws-cli, dotnet, dotnet-core, localstack</PackageTags>
-    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+		<Title>LocalStack.NET AWS CLI</Title>
+		<Description>
+			This .NET Core global tool provides the awslocal command, which is a thin wrapper around the aws command line interface for use with LocalStack.
+		</Description>
+		<PackageTags>global-tool, wrapper, cli, aws-cli, dotnet, dotnet-core, localstack</PackageTags>
+		<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+	</PropertyGroup>
 
-  <Target Name="PreBuild" AfterTargets="PreBuildEvent">
-    <ItemGroup>
-      <LicenseFile Include="../../LICENSE" />
-    </ItemGroup>
-    <Copy SourceFiles="@(LicenseFile)" DestinationFiles="@(LicenseFile->'./LICENSE.txt')" SkipUnchangedFiles="true" />
-  </Target>
+	<Target Name="PreBuild" AfterTargets="PreBuildEvent">
+		<ItemGroup>
+			<LicenseFile Include="../../LICENSE" />
+		</ItemGroup>
+		<Copy SourceFiles="@(LicenseFile)" DestinationFiles="@(LicenseFile->'./LICENSE.txt')" SkipUnchangedFiles="true" />
+	</Target>
 
-  <ItemGroup>
-    <None Include="LICENSE.txt" Pack="true" PackagePath="">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="../../assets/localstack-dotnet-square.png" Pack="true" PackagePath="" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="LICENSE.txt" Pack="true" PackagePath="">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Include="../../assets/localstack-dotnet-square.png" Pack="true" PackagePath="" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Remove="Docs\Usage.txt" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Remove="Docs\Usage.txt" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Compile Include="..\..\depedencies\localstack-dotnet-client\src\LocalStack.Client\Config.cs" Link="Depedencies\Config.cs" />
-    <Compile Include="..\..\depedencies\localstack-dotnet-client\src\LocalStack.Client\Contracts\IConfig.cs" Link="Depedencies\Contracts\IConfig.cs" />
-    <Compile Include="..\..\depedencies\localstack-dotnet-client\src\LocalStack.Client\Contracts\IConfigOptions.cs" Link="Depedencies\Contracts\IConfigOptions.cs" />
-    <Compile Include="..\..\depedencies\localstack-dotnet-client\src\LocalStack.Client\Options\ConfigOptions.cs" Link="Depedencies\Options\ConfigOptions.cs" />
-    <Compile Include="..\..\depedencies\localstack-dotnet-client\src\LocalStack.Client\Enums\AwsServiceEndpointMetadata.cs" Link="Depedencies\Enums\AwsServiceEndpointMetadata.cs" />
-    <Compile Include="..\..\depedencies\localstack-dotnet-client\src\LocalStack.Client\Enums\AwsServiceEnum.cs" Link="Depedencies\Enums\AwsServiceEnum.cs" />
-    <Compile Include="..\..\depedencies\localstack-dotnet-client\src\LocalStack.Client\Models\AwsServiceEndpoint.cs" Link="Depedencies\Models\AwsServiceEndpoint.cs" />
-    <Compile Include="..\..\depedencies\localstack-dotnet-client\src\LocalStack.Client\Models\Constants.cs" Link="Depedencies\Models\Constants.cs" />
-    <EmbeddedResource Include="Docs\Usage.txt" />
+	<ItemGroup>
+		<Compile Include="..\..\depedencies\localstack-dotnet-client\src\LocalStack.Client\Config.cs" Link="Depedencies\Config.cs" />
+		<Compile Include="..\..\depedencies\localstack-dotnet-client\src\LocalStack.Client\Contracts\IConfig.cs" Link="Depedencies\Contracts\IConfig.cs" />
+		<Compile Include="..\..\depedencies\localstack-dotnet-client\src\LocalStack.Client\Contracts\IConfigOptions.cs" Link="Depedencies\Contracts\IConfigOptions.cs" />
+		<Compile Include="..\..\depedencies\localstack-dotnet-client\src\LocalStack.Client\Options\ConfigOptions.cs" Link="Depedencies\Options\ConfigOptions.cs" />
+		<Compile Include="..\..\depedencies\localstack-dotnet-client\src\LocalStack.Client\Enums\AwsServiceEndpointMetadata.cs" Link="Depedencies\Enums\AwsServiceEndpointMetadata.cs" />
+		<Compile Include="..\..\depedencies\localstack-dotnet-client\src\LocalStack.Client\Enums\AwsServiceEnum.cs" Link="Depedencies\Enums\AwsServiceEnum.cs" />
+		<Compile Include="..\..\depedencies\localstack-dotnet-client\src\LocalStack.Client\Models\AwsServiceEndpoint.cs" Link="Depedencies\Models\AwsServiceEndpoint.cs" />
+		<Compile Include="..\..\depedencies\localstack-dotnet-client\src\LocalStack.Client\Models\Constants.cs" Link="Depedencies\Models\Constants.cs" />
+		<EmbeddedResource Include="Docs\Usage.txt" />
 
-    <None Include="..\..\depedencies\README.md" Link="Depedencies\README.md" />
-  </ItemGroup>
+		<None Include="..\..\depedencies\README.md" Link="Depedencies\README.md" />
+	</ItemGroup>
+
+	<PropertyGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
+		<DefineConstants>NETCOREAPP3_1</DefineConstants>
+	</PropertyGroup>
 
 </Project>
