@@ -1,3 +1,5 @@
+![Nuget](https://img.shields.io/nuget/dt/LocalStack.AwsLocal) [![NuGet](https://img.shields.io/nuget/v/LocalStack.AwsLocal.svg)](https://www.nuget.org/packages/LocalStack.AwsLocal/)
+
 # LocalStack.NET AWS CLI
 
 This .NET Core global tool provides the `awslocal` command, which is a thin wrapper around the `aws`
@@ -6,11 +8,11 @@ command line interface for use with [LocalStack](https://github.com/localstack/l
 
 ## Continuous integration
 
-| Build server    	| Platform 	| Build status                                                                                                                                                                                                                                                                         	|
-|-----------------	|----------	|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|
-| Azure Pipelines 	| Ubuntu   	| [![Build Status](https://denizirgindev.visualstudio.com/localstack-awscli-local/_apis/build/status/Ubuntu?branchName=master)](https://denizirgindev.visualstudio.com/localstack-awscli-local/_build/latest?definitionId=13&branchName=master) 	|
-| Azure Pipelines 	| macOs   	| [![Build Status](https://denizirgindev.visualstudio.com/localstack-awscli-local/_apis/build/status/macOS?branchName=master)](https://denizirgindev.visualstudio.com/localstack-awscli-local/_build/latest?definitionId=12&branchName=master)	|
-| Azure Pipelines 	| Windows   	| [![Build Status](https://denizirgindev.visualstudio.com/localstack-awscli-local/_apis/build/status/Windows?branchName=master)](https://denizirgindev.visualstudio.com/localstack-awscli-local/_build/latest?definitionId=14&branchName=master)	|
+| Build server     | Platform  | Build status                                                                                                                                                                                                                                                                          |
+|----------------- |---------- |-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Github Actions  | Ubuntu    | [![build-ubuntu](https://github.com/localstack-dotnet/localstack-awscli-local/actions/workflows/build-ubuntu.yml/badge.svg)](https://github.com/localstack-dotnet/localstack-awscli-local/actions/workflows/build-ubuntu.yml)  |
+| Github Actions   | Windows    | [![build-windows](https://github.com/localstack-dotnet/localstack-awscli-local/actions/workflows/build-windows.yml/badge.svg)](https://github.com/localstack-dotnet/localstack-awscli-local/actions/workflows/build-windows.yml)  |
+| Github Actions   | macOS    | [![build-macos](https://github.com/localstack-dotnet/localstack-awscli-local/actions/workflows/build-macos.yml/badge.svg)](https://github.com/localstack-dotnet/localstack-awscli-local/actions/workflows/build-macos.yml) |
 
 ## Installation
 
@@ -22,7 +24,7 @@ dotnet tool install --global LocalStack.AwsLocal
 
 | Stable                                                                                                              | Nightly                                                                                                                                                                        |
 |---------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [![NuGet](https://img.shields.io/nuget/v/LocalStack.AwsLocal.svg)](https://www.nuget.org/packages/LocalStack.AwsLocal/) | [![MyGet](https://img.shields.io/myget/localstack-dotnet-client/v/LocalStack.AwsLocal.svg?label=myget)](https://www.myget.org/feed/localstack-dotnet-client/package/nuget/LocalStack.AwsLocal) |
+| [![NuGet](https://img.shields.io/nuget/v/LocalStack.AwsLocal.svg)](https://www.nuget.org/packages/LocalStack.AwsLocal/) | [![MyGet](https://img.shields.io/myget/localstack-awscli-local/v/LocalStack.AwsLocal.svg?label=myget)](https://www.myget.org/feed/localstack-awscli-local/package/nuget/LocalStack.AwsLocal) |
 
 ## Usage
 
