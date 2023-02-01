@@ -24,7 +24,6 @@ dotnet tool install --global LocalStack.AwsLocal
 |---------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | [![NuGet](https://img.shields.io/nuget/v/LocalStack.AwsLocal.svg)](https://www.nuget.org/packages/LocalStack.AwsLocal/) | [![MyGet](https://img.shields.io/myget/localstack-dotnet-client/v/LocalStack.AwsLocal.svg?label=myget)](https://www.myget.org/feed/localstack-dotnet-client/package/nuget/LocalStack.AwsLocal) |
 
-
 ## Usage
 
 The `awslocal` command has the same usage as the `aws` command. For detailed usage,
@@ -75,4 +74,3 @@ See details : https://docs.aws.amazon.com/cli/latest/userguide/cli-usage-paramet
 ## <a name="license"></a> License
 
 Licensed under MIT, see [LICENSE](LICENSE) for the full text.
-
