@@ -1,3 +1,4 @@
 [submodule "depedencies/localstack-dotnet-client"]
 	path = depedencies/localstack-dotnet-client
 	url = https://github.com/localstack-dotnet/localstack-dotnet-client.git
+	branch = v1.4.0
